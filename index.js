@@ -16,21 +16,20 @@ app.post('/register', async (req, res) => {
     const { employeeName, name, designation, email, password } = req.body;
     const finalName = employeeName || name;
 
-    // Validate input fields
+   
     if (!finalName || !email || !password) {
       return res.status(400).json({ message: 'Name, email, and password are required' });
     }
 
-    // Check if the employee already exists
+  
     const existingEmployee = await Employee.findOne({ email });
     if (existingEmployee) {
       return res.status(400).json({ message: 'Employee already exists' });
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new employee
+   
     const newEmployee = new Employee({
       employeeName: finalName,
       designation: designation || 'Employee',
